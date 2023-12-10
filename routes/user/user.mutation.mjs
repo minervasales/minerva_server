@@ -98,7 +98,7 @@ router.post(
                   <td>
                       <a style="text-decoration: none; background-color: #FFC300; color: black; padding:
                   15px 20px; border-radius: 5px; font-family: Poppins;"
-                          href='http://localhost:3000/confirmation/${users.userID}'>Verify
+                          href='https://www.minervasales.com/confirmation/${users.userID}'>Verify
                           Registration</a>
                   </td>
               </tr>
@@ -244,7 +244,7 @@ router.post(
                   <td>
                       <a style="text-decoration: none; background-color: #FFC300; color: black; padding:
                   15px 20px; border-radius: 5px; font-family: Poppins;"
-                          href='http://localhost:3000/auth/changePassDetails/${users.userID}'>Change
+                          href='https://www.minervasales.com/auth/changePassDetails/${users.userID}'>Change
                           Password</a>
                   </td>
               </tr>
