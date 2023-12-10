@@ -30,7 +30,7 @@ app.use(cookiesParser());
 app.use(
    cors({
       credentials: true,
-      origin: ["http://localhost:3000", ""],
+      origin: ["http://localhost:3000", "https://www.minervasales.com"],
    })
 );
 
@@ -44,6 +44,6 @@ app.use(Logs);
 app.use(Archive);
 app.use(Service);
 
-server.listen({ port: 3001 }, () => {
+server.listen({ port: process.env.PORT || 3001 }, () => {
    console.log("Port is running at http://localhost:3001");
 });
