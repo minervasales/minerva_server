@@ -72,6 +72,13 @@ router.get(
          where: {
             orderID: req.params.id,
          },
+         include: {
+            User: {
+               include: {
+                  profile: true,
+               },
+            },
+         },
       });
 
       res.json(order);
