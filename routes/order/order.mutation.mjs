@@ -318,7 +318,7 @@ router.put(
       });
 
       switch (status) {
-         case "Ready for Pick-up":
+         case "Ready for Pick-Up":
             SENDMAIL(
                orders.User[0].email,
                "Ready for Pick-up",
