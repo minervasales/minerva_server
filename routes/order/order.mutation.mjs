@@ -22,8 +22,8 @@ router.post(
          },
       });
 
-      if (!users.verified)
-         throw new Error("You must need to be verified to create an oreder");
+      if (users.verified === false)
+         throw new Error("You must need to be verified to create an order");
 
       const prod = await prisma.product.findUnique({
          where: {
