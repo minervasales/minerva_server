@@ -10,3 +10,14 @@ export const SENDMAIL = (email, subject, message) => {
       content: [{ type: "text/html", value: message }],
    });
 };
+
+
+export const emailReminder = (email, subject, message, date) => {
+   SGrid.send({
+      to: email,
+      from: "minervasalesweb@gmail.com",
+      subject,
+      content: [{ type: "text/html", value: message }],
+      sendAt: date
+   })
+}

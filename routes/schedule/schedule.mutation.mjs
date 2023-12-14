@@ -1,7 +1,7 @@
 import express from "express";
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
-import { SENDMAIL } from "../../helpers/sengrid.mjs";
+import { emailReminder } from "../../helpers/sengrid.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
 import { RandomGenerateId } from "../../helpers/randomString.mjs";
 const router = express.Router();
@@ -112,7 +112,12 @@ router.put(
 
       switch (status) {
          case "Completed":
-            SENDMAIL(
+            const dateFormatted = new Date(schedule.date);
+            const dateTargetString = `${dateFormatted}T${schedule.time}`;
+            const dateSecondsFormatted =
+               new Date(dateTargetString).getTime() /
+               (1000).toISOString().slice(0, 10);
+            emailReminder(
                schedule.User[0].email,
                "Appointment Reminder",
                `<html lang="en">
@@ -172,7 +177,8 @@ router.put(
                 </table>
             </body>
             
-            </html>`
+            </html>`,
+               dateSecondsFormatted
             );
             break;
          case "Cancelled":
