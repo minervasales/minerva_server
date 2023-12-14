@@ -113,7 +113,7 @@ router.put(
       switch (status) {
          case "Completed":
             SENDMAIL(
-               email,
+               schedule.User[0].email,
                "Appointment Reminder",
                `<html lang="en">
       
