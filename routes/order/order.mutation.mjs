@@ -58,7 +58,7 @@ router.post(
          where: { productID },
       });
 
-      if (payment === "GCASH" || "MAYA" || "Bank Transfer") {
+      if (payment === "GCASH" || "MAYA" || "BANK") {
          SENDMAIL(
             users.email,
             "Waiting Payment Confirmation",
@@ -378,7 +378,6 @@ router.put(
       </html>
             `
             );
-
             switch (orders.payment) {
                case "GCASH":
                   SENDMAIL(
@@ -1187,6 +1186,71 @@ router.put(
                   );
                   break;
             }
+            break;
+         case "Order Cancelled":
+            SENDMAIL(
+               orders.User[0].email,
+               `Order Cancelled`,
+               `<html lang="en">
+
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="/index.css" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Oxygen&family=Arial:wght@200&family=Rubik&display=swap"
+              rel="stylesheet">
+          <title>Document</title>
+      
+      <body style="box-sizing:  border-box; margin: 0; padding: 0;">
+          <table style="width: 500px; height: auto; ">
+              <tr style="height: 60px;">
+                  <td style="font-family: Poppins;">Hello ${orders.User[0].profile.firstname} ${orders.User[0].profile.lastname}</h2>
+                  </td>
+              </tr>
+              <tr style=" height: 60px;">
+                  <td style="font-family: Poppins;">Your order ${orders.orders} has been canceled. We hope to do business with you
+                      again. For more details regarding the cancellation, kindly login and view the order status.
+                  </td>
+              </tr>
+              <tr style=" height: 60px;">
+                  <td style="font-family: Poppins;">
+                      For any inquires, log in to your Minerva Sales Corp. account and inquire via chatbox or message our
+                      Facebook page. Thank you.
+                  </td>
+              </tr>
+              <tr style="height: 60px;">
+                  <td style="font-family: Poppins;">
+                      If you did
+                      not request
+                      verification, please ignore this email
+                  </td>
+              </tr>
+              <tr style="height: 30px; ">
+                  <td style="width: 100%; text-align: center; ">
+                      <img src="
+                      http://cdn.mcauto-images-production.sendgrid.net/c19fbca0252c8257/91bb1b2a-746f-431b-97d7-482bdcdbad63/1537x546.png"
+                          alt="minerva.logo" height="100" width="300" />
+                  </td>
+              </tr>
+              <tr>
+                  <td style="text-align: center; height: 35px;">
+                      <p style="font-family: Poppins; height: 0;">
+                          Sent by Minerva Sales Corp
+                      </p>
+                  </td>
+              </tr>
+              <tr>
+                  <td style="text-align: center; height: 35px;">
+                      <p style="font-family: Poppins; height: 0;">
+                          General Malvar Street, Barangay Tubigan, Binan City, Laguna, 4024
+                      </p>
+                  </td>
+              </tr>
+          </table>
+      </body>
+      
+      </html>`
+            );
             break;
       }
 
