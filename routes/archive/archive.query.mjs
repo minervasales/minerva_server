@@ -1,10 +1,7 @@
 import express from "express";
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
-import { subWeeks, subMonths, subDays } from "date-fns";
 const router = express();
-
-const currentDateToday = new Date();
 
 router.get(
    "/getAllArchive",
@@ -13,38 +10,39 @@ router.get(
       switch (filter) {
          case "Daily":
             const Dailyarchvive = await prisma.$queryRawUnsafe(`
-            SELECT "Archive".*, "User".*, "Profile".*
+            SELECT "Archive".*, "User"."email" AS "user_email", "Profile".*
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
             LIMIT 6
-            OFFSET ${skip}*0`);
+            OFFSET 6*${skip}
+			`);
 
-            return res.json(Dailyarchvive);
+            res.json(Dailyarchvive);
             break;
          case "Weekly":
             const WeeklyArchvive = await prisma.$queryRawUnsafe(`
-            SELECT "Archive".*, "User".*,"Profile".*
+            SELECT "Archive".*, "User"."email" AS "user_email","Profile".*
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
             WHERE EXTRACT(WEEK FROM "Archive"."createdAt") = EXTRACT(WEEK FROM NOW())
             LIMIT 6
-            OFFSET ${skip}*0`);
+            OFFSET 6*${skip}`);
 
-            return res.json(WeeklyArchvive);
+            res.json(WeeklyArchvive);
             break;
          case "Monthly":
             const MonthlyArchvive = await prisma.$queryRawUnsafe(`
-            SELECT "Archive".*, "User".*,"Profile".*
+            SELECT "Archive".*, "User"."email" AS "user_email","Profile".*
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
             WHERE EXTRACT(MONTH FROM "Archive"."createdAt") = EXTRACT(MONTH FROM NOW())
             LIMIT 6
-            OFFSET ${skip}*0`);
+            OFFSET 6*${skip}`);
 
-            return res.json(MonthlyArchvive);
+            res.json(MonthlyArchvive);
             break;
       }
    })
