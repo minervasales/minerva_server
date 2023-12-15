@@ -10,7 +10,7 @@ router.get(
       switch (filter) {
          case "Daily":
             const Dailyarchvive = await prisma.$queryRawUnsafe(`
-            "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
+            SELECT "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
@@ -22,7 +22,7 @@ router.get(
             break;
          case "Weekly":
             const WeeklyArchvive = await prisma.$queryRawUnsafe(`
-            "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
+            SELECT "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
@@ -34,7 +34,7 @@ router.get(
             break;
          case "Monthly":
             const MonthlyArchvive = await prisma.$queryRawUnsafe(`
-            "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
+            SELECT "Archive".*, "User"."email" AS "user_email","Profile"."firstname" AS "firstname", "Profile"."lastname" as "lastname"
             FROM "Archive"
             JOIN "User" ON "Archive"."userID" = "User"."userID"
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
