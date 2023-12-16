@@ -51,6 +51,12 @@ router.post(
       const { password, email, firstname, lastname, phone, shipping } =
          req.body;
 
+      const checkEmail = await prisma.user.findUnique({
+         where: { email },
+      });
+
+      if (checkEmail) throw new Error("Email is already exist");
+
       const pass = await bcryptjs.hash(password, 12);
 
       const users = await prisma.user.create({
@@ -151,10 +157,10 @@ router.post(
          },
       });
 
+      if (!loginUser) throw new Error("Email does not exist");
+
       if (loginUser.verified === false)
          throw new Error("You need to verify your account first");
-
-      if (!loginUser) throw new Error("Email does not exist");
 
       const valid = await bcryptjs.compare(
          req.body.password,
