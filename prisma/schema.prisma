@@ -32,6 +32,8 @@ model User {
   Logs      Logs[]
   Orders    Orders[]
   Archive   Archive[]
+  About     About[]
+  Contacts  Contacts[]
 }
 
 model Archive {
@@ -121,4 +123,27 @@ model Orders {
   Archive   Archive[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
+}
+
+model About {
+  aboutID     String   @id @default(cuid())
+  id          String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  User        User?    @relation(fields: [userID], references: [userID])
+  userID      String?
+}
+
+model Contacts {
+  contactsID  String   @id @default(cuid())
+  id          String
+  image       String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  User        User?    @relation(fields: [userID], references: [userID])
+  userID      String?
 }

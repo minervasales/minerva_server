@@ -14,7 +14,8 @@ import Schedule from "./routes/schedule/schedule.mjs";
 import Logs from "./routes/logs/logs.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
 import Service from "./routes/services/services.mjs";
-
+import Contact from "./routes/contact/contact.mjs";
+import About from "./routes/about/about.mjs";
 const app = express();
 
 const server = createServer(app);
@@ -43,6 +44,8 @@ app.use(Orders);
 app.use(Logs);
 app.use(Archive);
 app.use(Service);
+app.use(About);
+app.use(Contact);
 
 server.listen({ port: process.env.PORT || 3001 }, () => {
    console.log("Port is running at http://localhost:3001");

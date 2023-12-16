@@ -115,6 +115,33 @@ CREATE TABLE "Orders" (
 );
 
 -- CreateTable
+CREATE TABLE "About" (
+    "aboutID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userID" TEXT,
+
+    CONSTRAINT "About_pkey" PRIMARY KEY ("aboutID")
+);
+
+-- CreateTable
+CREATE TABLE "Contacts" (
+    "contactsID" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userID" TEXT,
+
+    CONSTRAINT "Contacts_pkey" PRIMARY KEY ("contactsID")
+);
+
+-- CreateTable
 CREATE TABLE "_ArchiveToOrders" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -191,6 +218,12 @@ ALTER TABLE "Services" ADD CONSTRAINT "Services_userUserID_fkey" FOREIGN KEY ("u
 
 -- AddForeignKey
 ALTER TABLE "Logs" ADD CONSTRAINT "Logs_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "About" ADD CONSTRAINT "About_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Contacts" ADD CONSTRAINT "Contacts_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ArchiveToOrders" ADD CONSTRAINT "_ArchiveToOrders_A_fkey" FOREIGN KEY ("A") REFERENCES "Archive"("archieveID") ON DELETE CASCADE ON UPDATE CASCADE;
