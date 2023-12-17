@@ -16,7 +16,6 @@ router.post(
             title,
             id: RandomGenerateId(6),
             description,
-            image: "",
             User: {
                connect: {
                   user,
