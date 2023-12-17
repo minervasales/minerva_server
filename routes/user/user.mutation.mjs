@@ -16,7 +16,7 @@ router.post(
          req.body;
 
       if (!password || !email || !firstname || !lastname || !phone || !shipping)
-         throw new Error("Field should not be empty.");
+         res.status(500).send("Field should not be empty.");
 
       const pass = await bcryptjs.hash(password, 12);
 
@@ -55,7 +55,7 @@ router.post(
          where: { email },
       });
 
-      if (checkEmail) throw new Error("Email is already exist");
+      if (checkEmail) res.status(500).send("Email is already exist");
 
       const pass = await bcryptjs.hash(password, 12);
 
@@ -158,7 +158,7 @@ router.post(
          },
       });
 
-      if (!loginUser) throw new Error("Email does not exist");
+      if (!loginUser) res.status(500).send("Email does not exist");
 
       if (loginUser.verified === false) {
          res.status(500).send("You need to verify your account first");
@@ -223,7 +223,7 @@ router.post(
          },
       });
 
-      if (!users) throw new Error("Email address not found");
+      if (!users) res.status(500).send("Email address not found");
 
       SENDMAIL(
          email,
@@ -295,7 +295,7 @@ router.put(
       const { password, retypepassword, olderPassword, userID } = req.body;
 
       if (password !== retypepassword)
-         throw new Error("Password is mismatched");
+         res.status(500).send("Password is mismatched");
 
       const userForget = await prisma.user.findUnique({
          where: {
@@ -305,7 +305,8 @@ router.put(
 
       const oldPass = await bcryptjs.compare(olderPassword, userForget);
 
-      if (!oldPass) throw new Error("Old Password is incorrect. Try Again");
+      if (!oldPass)
+         res.status(500).send("Old Password is incorrect. Try Again");
 
       const pass = await bcryptjs.hash(password, 12);
 
