@@ -169,7 +169,7 @@ router.post(
          loginUser.password
       );
 
-      if (!valid) res.send("Invalid password");
+      if (!valid) res.status(500).send("Invalid password");
 
       const token = sign(
          { userID: loginUser.userID, role: loginUser.role },
