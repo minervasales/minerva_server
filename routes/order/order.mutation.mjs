@@ -23,7 +23,9 @@ router.post(
       });
 
       if (users.verified === false)
-         throw new Error("You must need to be verified to create an order");
+         res.status(500).send(
+            "You must need to be verified to create an order"
+         );
 
       const prod = await prisma.product.findUnique({
          where: {
@@ -247,6 +249,8 @@ router.post(
    TryCatch(async (req, res) => {
       const { startDate, endDate, userID } = req.body;
 
+      if (!startDate || !endDate) res.status(500).send("Fields are required");
+
       const orders = await prisma.orders.findMany({
          where: {
             createdAt: {
@@ -254,10 +258,6 @@ router.post(
                lte: new Date(endDate),
             },
          },
-      });
-
-      orders.map(({ orderID }) => {
-         console.log(orderID);
       });
 
       await prisma.archive.create({

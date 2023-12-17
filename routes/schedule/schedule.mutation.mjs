@@ -2,7 +2,6 @@ import express from "express";
 import tryCatch from "../../middleware/trycatch.mjs";
 import { prisma } from "../../server.mjs";
 import { emailReminder } from "../../helpers/sengrid.mjs";
-import TryCatch from "../../middleware/trycatch.mjs";
 import { RandomGenerateId } from "../../helpers/randomString.mjs";
 const router = express.Router();
 
@@ -18,7 +17,7 @@ router.post(
       });
 
       if (dateVerified.length >= 2)
-         throw new Error("The 2 maximum exceed to schedule this day");
+         res.status(500).send("The 2 maximum exceed to schedule this day");
 
       const schedule = await prisma.schedule.create({
          data: {
@@ -62,7 +61,7 @@ router.post(
       });
 
       if (dateVerified.length >= 2)
-         throw new Error("The 2 maximum exceed to schedule this day");
+         res.status(500).send("The 2 maximum exceed to schedule this day");
 
       const schedule = await prisma.schedule.create({
          data: {

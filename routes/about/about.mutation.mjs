@@ -11,7 +11,7 @@ router.post(
       const { title, description, userID } = req.body;
 
       if (!title || !description || !userID)
-         throw new Error("Filed shoud not be empty");
+         res.status(500).send("Filed shoud not be empty");
       const about = await prisma.about.create({
          data: {
             title,
@@ -34,7 +34,8 @@ router.patch(
    TryCatch(async (req, res) => {
       const { title, description } = req.body;
 
-      if (!title || !description) throw new Error("Filed shoud not be empty");
+      if (!title || !description)
+         res.status(500).send("Filed shoud not be empty");
 
       const about = await prisma.about.update({
          where: { aboutID: req.params.id },

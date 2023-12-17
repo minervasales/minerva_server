@@ -14,7 +14,7 @@ router.post(
          req.body;
 
       if ((!name || !quantity || !price || !descriptions, !category || !stock))
-         throw new Error("Fields cannot be empty");
+         res.status(500).send("Fields cannot be empty");
 
       const imageArray = [];
       req.files.map(({ location }) => {

@@ -10,7 +10,7 @@ router.post(
    TryCatch(async (req, res) => {
       const { title, description, userID } = req.body;
       if (!title || !description || !userID)
-         throw new Error("Filed shoud not be empty");
+         res.status(500).send("Filed shoud not be empty");
       const contacts = await prisma.contacts.create({
          data: {
             title,
@@ -33,7 +33,8 @@ router.patch(
    TryCatch(async (req, res) => {
       const { title, description } = req.body;
 
-      if (!title || !description) throw new Error("Filed shoud not be empty");
+      if (!title || !description)
+         res.status(500).send("Filed shoud not be empty");
 
       const contact = await prisma.contacts.update({
          data: {
