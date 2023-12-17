@@ -149,8 +149,9 @@ router.post(
 router.post(
    "/login",
    tryCatch(async (req, res) => {
-      if (!req.body.email || !req.body.password)
-         throw new Error("Field should not be empty");
+      if (!req.body.email || !req.body.password) {
+         res.send("Field should not be empty");
+      }
       const loginUser = await prisma.user.findUnique({
          where: {
             email: req.body.email,
@@ -159,15 +160,16 @@ router.post(
 
       if (!loginUser) throw new Error("Email does not exist");
 
-      if (loginUser.verified === false)
-         throw new Error("You need to verify your account first");
+      if (loginUser.verified === false) {
+         res.send("You need to verify your account first");
+      }
 
       const valid = await bcryptjs.compare(
          req.body.password,
          loginUser.password
       );
 
-      if (!valid) throw new Error("Password is not match");
+      if (!valid) res.send("Invalid password");
 
       const token = sign(
          { userID: loginUser.userID, role: loginUser.role },
