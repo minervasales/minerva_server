@@ -18,7 +18,7 @@ router.post(
             description,
             User: {
                connect: {
-                  user,
+                  userID,
                },
             },
          },
