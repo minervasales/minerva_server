@@ -131,7 +131,6 @@ CREATE TABLE "About" (
 CREATE TABLE "Contacts" (
     "contactsID" TEXT NOT NULL,
     "id" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

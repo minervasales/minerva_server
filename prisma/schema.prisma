@@ -139,7 +139,6 @@ model About {
 model Contacts {
   contactsID  String   @id @default(cuid())
   id          String
-  image       String
   title       String
   description String
   createdAt   DateTime @default(now())
