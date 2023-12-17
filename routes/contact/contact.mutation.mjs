@@ -16,7 +16,7 @@ router.post(
             title,
             id: RandomGenerateId(6),
             description,
-            image,
+            image: req.file.location,
             User: {
                connect: {
                   user,
