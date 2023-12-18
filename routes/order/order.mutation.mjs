@@ -91,11 +91,6 @@ router.post(
                          Facebook page. Thank you.
                      </td>
                  </tr>
-                 <tr style="height: 60px;">
-                     <td style="font-family: Poppins;">
-                         If you did not request a new password, please ignore this email
-                     </td>
-                 </tr>
                  <tr style="height: 30px; ">
                      <td style="width: 100%; text-align: center; ">
                          <img src="
@@ -194,13 +189,6 @@ router.post(
                   <td style="font-family: Poppins;">
                       For any inquires, log in to your Minerva Sales Corp. account and inquire via chatbox or message our
                       Facebook page. Thank you.
-                  </td>
-              </tr>
-              <tr style="height: 60px;">
-                  <td style="font-family: Poppins;">
-                      If you did
-                      not request
-                      verification, please ignore this email
                   </td>
               </tr>
               <tr style="height: 30px; ">
@@ -345,11 +333,6 @@ router.put(
                                  <td style="font-family: Poppins;">
                                     For any inquries, log in to your Minerva Sales Corp. Account and inquire via chatbox or message our
                                     Facebook page. Thank you.
-                                 </td>
-                           </tr>
-                           <tr style="height: 60px;">
-                                 <td style="font-family: Poppins;">
-                                    If you did not request a new password, please ignore this email
                                  </td>
                            </tr>
                            <tr style="height: 30px; ">
