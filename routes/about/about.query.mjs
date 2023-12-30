@@ -17,6 +17,22 @@ router.get(
 );
 
 router.get(
+   "/getSearchAbout",
+   TryCatch(async (req, res) => {
+      const about = await prisma.about.findMany({
+         where: {
+            title: {
+               contains: req.query.search,
+               mode: "insensitive",
+            },
+         },
+      });
+
+      res.json(about);
+   })
+);
+
+router.get(
    "/getAllAbout/:id",
    TryCatch(async (req, res) => {
       const about = await prisma.about.findMany({

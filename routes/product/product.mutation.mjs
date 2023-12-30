@@ -27,7 +27,8 @@ router.post(
             id: `#${RandomGenerateId(6)}`,
             name,
             stock,
-            quantity: parseInt(quantity),
+            oldQuantity: parseInt(quantity),
+            newQuantity: parseInt(quantity),
             category,
             price: parseFloat(price),
             descriptions,
@@ -79,8 +80,8 @@ router.delete(
 router.patch(
    "/updateProduct/:id",
    tryCatch(async (req, res) => {
-      const { name, descriptions, quantity, price, category, stock, userID } =
-         req.body;
+      const { name, descriptions, price, category, stock, userID } = req.body;
+
       const products = await prisma.product.update({
          data: {
             name,
@@ -88,7 +89,6 @@ router.patch(
             descriptions,
             category,
             stock,
-            quantity: parseInt(quantity),
          },
          where: {
             productID: req.params.id,
@@ -114,9 +114,16 @@ router.put(
    "/updateProductQuantity/:id",
    tryCatch(async (req, res) => {
       const { quantity, userID } = req.body;
+
+      const prodId = await prisma.product.findUnique({
+         where: {
+            productID: req.params.id,
+         },
+      });
       const products = await prisma.product.update({
          data: {
-            quantity,
+            newQuantity: prodId.quantity,
+            oldQuantity: prodId.quantity + quantity,
          },
          where: {
             productID: req.params.id,

@@ -16,8 +16,26 @@ router.get(
                },
             },
          },
+         orderBy: {
+            createdAt: req.query.orderby,
+         },
       });
 
+      res.json(logs);
+   })
+);
+
+router.get(
+   "/getSearchLogs",
+   tryCatch(async (req, res) => {
+      const logs = await prisma.logs.findMany({
+         where: {
+            title: {
+               contains: req.query.search,
+               mode: "insensitive",
+            },
+         },
+      });
       res.json(logs);
    })
 );

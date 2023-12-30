@@ -15,11 +15,36 @@ router.get(
                },
             },
          },
+         include: {
+            Reason: true,
+         },
          take: 6,
          skip: req.query.skip * 6,
+         orderBy: {
+            createdAt: req.query.orderby,
+         },
       });
 
       res.json(orders);
+   })
+);
+
+router.get(
+   "/getAllOrders",
+   tryCatch(async (req, res) => {
+      const schedule = await prisma.orders.findMany({
+         where: {
+            orders: {
+               contains: req.query.search,
+               mode: "insensitive",
+            },
+         },
+         include: {
+            Reason: true,
+         },
+      });
+
+      res.json(schedule);
    })
 );
 
@@ -59,6 +84,7 @@ router.get(
                   profile: true,
                },
             },
+            Reason: true,
          },
       });
       res.json(orders);
@@ -78,6 +104,7 @@ router.get(
                   profile: true,
                },
             },
+            Reason: true,
          },
       });
 

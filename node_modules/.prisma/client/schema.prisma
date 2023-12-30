@@ -36,6 +36,29 @@ model User {
   Contacts  Contacts[]
 }
 
+model Cars {
+  carsID     String    @id @default(cuid())
+  type       String
+  model      String
+  brand      String
+  year       String
+  platNo     String
+  remarks    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  Schedule   Schedule? @relation(fields: [scheduleID], references: [scheduleID])
+  scheduleID String?
+}
+
+model Reason {
+  reasonID   String    @id @default(cuid())
+  reason     String
+  Schedule   Schedule? @relation(fields: [scheduleID], references: [scheduleID])
+  scheduleID String?
+  Orders     Orders?   @relation(fields: [orderID], references: [orderID])
+  orderID    String?
+}
+
 model Archive {
   archieveID String   @id @default(cuid())
   id         String
@@ -82,7 +105,8 @@ model Product {
   name         String
   descriptions String
   price        Float
-  quantity     Int
+  oldQuantity  Int
+  newQuantity  Int
   category     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
@@ -101,6 +125,8 @@ model Schedule {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
   User       User[]
+  Car        Cars[]
+  Reason     Reason[]
 }
 
 model Logs {
@@ -112,17 +138,19 @@ model Logs {
 }
 
 model Orders {
-  orderID   String    @id @default(cuid())
-  orders    String
-  quantity  Int
-  total     Float
-  payment   String
-  status    String
-  Product   Product[]
-  User      User[]
-  Archive   Archive[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  orderID      String    @id @default(cuid())
+  orders       String
+  quantity     Int
+  total        Float
+  payment      String
+  status       String
+  proofPayment String?
+  Product      Product[]
+  User         User[]
+  Archive      Archive[]
+  Reason       Reason[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
 }
 
 model About {

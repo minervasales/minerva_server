@@ -10,11 +10,39 @@ router.get(
       const schedule = await prisma.schedule.findMany({
          take: 6,
          skip: req.query.skip * 6,
+         orderBy: {
+            createdAt: req.query.orderby,
+         },
          include: {
             User: {
                include: {
                   profile: true,
                },
+            },
+            Car: true,
+            Reason: true,
+         },
+      });
+
+      res.json(schedule);
+   })
+);
+
+router.get(
+   "/getSearchAppointments",
+   tryCatch(async (req, res) => {
+      const schedule = await prisma.schedule.findMany({
+         where: {
+            scheduleID: {
+               contains: req.query.search,
+               mode: "insensitive",
+            },
+         },
+         include: {
+            Car: true,
+            Reason: true,
+            User: {
+               include: { profile: true },
             },
          },
       });
@@ -39,9 +67,11 @@ router.get(
          include: {
             User: {
                include: {
-                  profile: true
-               }
+                  profile: true,
+               },
             },
+            Car: true,
+            Reason: true,
          },
       });
 
@@ -61,6 +91,8 @@ router.get(
                   profile: true,
                },
             },
+            Car: true,
+            Reason: true,
          },
       });
 

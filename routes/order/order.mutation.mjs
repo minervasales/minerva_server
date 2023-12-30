@@ -6,10 +6,12 @@ import { GenerateRandomORDER } from "../../helpers/randomGenerateORDER.mjs";
 import TryCatch from "../../middleware/trycatch.mjs";
 import { RandomGenerateId } from "../../helpers/randomString.mjs";
 import { format } from "date-fns";
+import { uploadImage } from "../../helpers/aws.mjs";
 const router = express.Router();
 
 router.post(
    "/createOrders",
+   uploadImage.single("file"),
    tryCatch(async (req, res) => {
       const { productID, quantity, payment, userID } = req.body;
 
@@ -33,34 +35,27 @@ router.post(
          },
       });
 
-      const order = await prisma.orders.create({
-         data: {
-            orders: `#${GenerateRandomORDER(8)}`,
-            quantity,
-            payment,
-            Product: {
-               connect: {
-                  productID: prod.productID,
-               },
-            },
-            User: {
-               connect: {
-                  userID,
-               },
-            },
-            total: prod.price * quantity,
-            status: "Pending",
-         },
-      });
-
-      await prisma.product.update({
-         data: {
-            quantity: prod.quantity - quantity,
-         },
-         where: { productID },
-      });
-
       if (payment === "GCASH" || "MAYA" || "BANK") {
+         const order = await prisma.orders.create({
+            data: {
+               orders: `#${GenerateRandomORDER(8)}`,
+               quantity,
+               payment,
+               proofPayment: req.file.location,
+               Product: {
+                  connect: {
+                     productID: prod.productID,
+                  },
+               },
+               User: {
+                  connect: {
+                     userID,
+                  },
+               },
+               total: prod.price * quantity,
+               status: "Pending",
+            },
+         });
          SENDMAIL(
             users.email,
             "Waiting Payment Confirmation",
@@ -117,7 +112,29 @@ router.post(
          
              </html>`
          );
+
+         res.json(order);
       }
+
+      const order = await prisma.orders.create({
+         data: {
+            orders: `#${GenerateRandomORDER(8)}`,
+            quantity,
+            payment,
+            Product: {
+               connect: {
+                  productID: prod.productID,
+               },
+            },
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+            total: prod.price * quantity,
+            status: "Pending",
+         },
+      });
 
       await prisma.logs.create({
          data: {
@@ -1169,6 +1186,81 @@ router.put(
                   );
                   break;
             }
+            break;
+         case "Order Completed":
+            // bawas sa inventory + email
+
+            const getProductID = await prisma.product.findUnique({
+               where: {
+                  productID: orders.Product[0].productID,
+               },
+            });
+
+            await prisma.product.update({
+               where: {
+                  productID: getProductID.productID,
+               },
+               data: {
+                  newQuantity: getProductID.newQuantity - orders.quantity,
+               },
+            });
+
+            SENDMAIL(
+               orders.User[0].email,
+               "Order Completed",
+               `<html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="/index.css" rel="stylesheet" />
+                <link href="https://fonts.googleapis.com/css2?family=Oxygen&family=Arial:wght@200&family=Rubik&display=swap"
+                    rel="stylesheet">
+                <title>Document</title>
+            
+            <body style="box-sizing:  border-box; margin: 0; padding: 0;">
+                <table style="width: 500px; height: auto; ">
+                    <tr style="height: 60px;">
+                        <td style="font-family: Poppins;">Hello ${users[0].profile.firstname} ${users[0].profile.lastname}</h2>
+                        </td>
+                    </tr>
+                    <tr style=" height: 60px;">
+                        <td style="font-family: Poppins;">Your order ${orders.orders} has been successfully completed. We hope to do
+                            business with you again.
+                        </td>
+                    </tr>
+                    <tr style=" height: 60px;">
+                        <td style="font-family: Poppins;">
+                            For any inquires, log in to your Minerva Sales Corp. account and inquire via chatbox or message our
+                            Facebook page. Thank you.
+                        </td>
+                    </tr>
+                    <tr style="height: 30px; ">
+                        <td style="width: 100%; text-align: center; ">
+                            <img src="
+                                  http://cdn.mcauto-images-production.sendgrid.net/c19fbca0252c8257/91bb1b2a-746f-431b-97d7-482bdcdbad63/1537x546.png"
+                                alt="minerva.logo" height="100" width="300" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; height: 35px;">
+                            <p style="font-family: Poppins; height: 0;">
+                                Sent by Minerva Sales Corp
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; height: 35px;">
+                            <p style="font-family: Poppins; height: 0;">
+                                General Malvar Street, Barangay Tubigan, Binan City, Laguna, 4024
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+            
+            </html>`
+            );
             break;
          case "Order Cancelled":
             SENDMAIL(

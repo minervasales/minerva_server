@@ -8,7 +8,18 @@ const router = express.Router();
 router.post(
    "/createSchedule",
    tryCatch(async (req, res) => {
-      const { date, time, userID, service } = req.body;
+      const {
+         date,
+         time,
+         userID,
+         service,
+         brand,
+         model,
+         platNo,
+         remarks,
+         type,
+         year,
+      } = req.body;
 
       const dateVerified = await prisma.schedule.findMany({
          where: {
@@ -26,6 +37,16 @@ router.post(
             service,
             status: "pending",
             time,
+            Car: {
+               create: {
+                  brand,
+                  model,
+                  platNo,
+                  remarks,
+                  type,
+                  year,
+               },
+            },
             User: {
                connect: {
                   userID,
@@ -52,7 +73,20 @@ router.post(
 router.post(
    "/createManualSchedule",
    tryCatch(async (req, res) => {
-      const { date, time, name, service, status, userID } = req.body;
+      const {
+         date,
+         time,
+         name,
+         service,
+         status,
+         userID,
+         brand,
+         model,
+         platNo,
+         remarks,
+         type,
+         year,
+      } = req.body;
 
       const dateVerified = await prisma.schedule.findMany({
          where: {
@@ -71,6 +105,16 @@ router.post(
             status: "Pending",
             time,
             name,
+            Car: {
+               create: {
+                  brand,
+                  model,
+                  platNo,
+                  remarks,
+                  type,
+                  year,
+               },
+            },
          },
       });
 

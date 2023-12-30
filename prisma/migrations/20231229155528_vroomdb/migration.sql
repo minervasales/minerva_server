@@ -16,6 +16,32 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Cars" (
+    "carsID" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "model" TEXT NOT NULL,
+    "brand" TEXT NOT NULL,
+    "year" TEXT NOT NULL,
+    "platNo" TEXT NOT NULL,
+    "remarks" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "scheduleID" TEXT,
+
+    CONSTRAINT "Cars_pkey" PRIMARY KEY ("carsID")
+);
+
+-- CreateTable
+CREATE TABLE "Reason" (
+    "reasonID" TEXT NOT NULL,
+    "reason" TEXT NOT NULL,
+    "scheduleID" TEXT,
+    "orderID" TEXT,
+
+    CONSTRAINT "Reason_pkey" PRIMARY KEY ("reasonID")
+);
+
+-- CreateTable
 CREATE TABLE "Archive" (
     "archieveID" TEXT NOT NULL,
     "id" TEXT NOT NULL,
@@ -67,7 +93,8 @@ CREATE TABLE "Product" (
     "name" TEXT NOT NULL,
     "descriptions" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
-    "quantity" INTEGER NOT NULL,
+    "oldQuantity" INTEGER NOT NULL,
+    "newQuantity" INTEGER NOT NULL,
     "category" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -108,6 +135,7 @@ CREATE TABLE "Orders" (
     "total" DOUBLE PRECISION NOT NULL,
     "payment" TEXT NOT NULL,
     "status" TEXT NOT NULL,
+    "proofPayment" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -205,6 +233,15 @@ CREATE UNIQUE INDEX "_OrdersToUser_AB_unique" ON "_OrdersToUser"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_OrdersToUser_B_index" ON "_OrdersToUser"("B");
+
+-- AddForeignKey
+ALTER TABLE "Cars" ADD CONSTRAINT "Cars_scheduleID_fkey" FOREIGN KEY ("scheduleID") REFERENCES "Schedule"("scheduleID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Reason" ADD CONSTRAINT "Reason_scheduleID_fkey" FOREIGN KEY ("scheduleID") REFERENCES "Schedule"("scheduleID") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Reason" ADD CONSTRAINT "Reason_orderID_fkey" FOREIGN KEY ("orderID") REFERENCES "Orders"("orderID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Archive" ADD CONSTRAINT "Archive_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("userID") ON DELETE SET NULL ON UPDATE CASCADE;

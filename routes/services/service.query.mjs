@@ -10,9 +10,28 @@ router.get(
       const services = await prisma.services.findMany({
          take: 3,
          skip: req.query.skip * 3,
+         orderBy: {
+            createdAt: req.query.orderby,
+         },
       });
 
       return res.json(services);
+   })
+);
+
+router.get(
+   "getSearchServices",
+   TryCatch(async (req, res) => {
+      const services = await prisma.services.findMany({
+         where: {
+            services: {
+               contains: req.query.search,
+               mode: "insensitive",
+            },
+         },
+      });
+
+      res.json(services);
    })
 );
 
