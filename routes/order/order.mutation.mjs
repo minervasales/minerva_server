@@ -35,26 +35,6 @@ router.post(
       });
 
       if (payment === "GCASH" || "MAYA" || "BANK") {
-         const order = await prisma.orders.create({
-            data: {
-               orders: `#${GenerateRandomORDER(8)}`,
-               quantity,
-               payment,
-               proofPayment: req.file.location,
-               Product: {
-                  connect: {
-                     productID: prod.productID,
-                  },
-               },
-               User: {
-                  connect: {
-                     userID,
-                  },
-               },
-               total: prod.price * quantity,
-               status: "Pending",
-            },
-         });
          SENDMAIL(
             users.email,
             "Waiting Payment Confirmation",
