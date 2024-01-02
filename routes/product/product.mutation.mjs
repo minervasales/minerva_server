@@ -124,7 +124,7 @@ router.put(
          data: {
             newQuantity: prodId.newQuantity + quantity,
             oldQuantity: prodId.newQuantity,
-            update: new Date(Date.now()),
+            updatedAt: new Date(Date.now()),
          },
          where: {
             productID: req.params.id,

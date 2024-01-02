@@ -20,6 +20,21 @@ router.get(
 );
 
 router.get(
+   "/getAllProductByAsc/",
+   tryCatch(async (req, res) => {
+      const products = await prisma.product.findMany({
+         take: 6,
+         skip: req.query.skip * 6,
+         orderBy: {
+            updatedAt: "asc",
+         },
+      });
+
+      return res.json(products);
+   })
+);
+
+router.get(
    "/getProductsByCategory/Tires",
    TryCatch(async (req, res) => {
       const { take, offset, orders } = req.body;
@@ -41,12 +56,12 @@ router.get(
 
 router.get(
    "/getProductsByCategory/",
-   TryCatch(async (req ,res) => {
+   TryCatch(async (req, res) => {
       const products = await prisma.product.findMany({
          where: {
             category: {
-               contains:  req.query.category,
-               mode: "insensitive"
+               contains: req.query.category,
+               mode: "insensitive",
             },
          },
          take: 6,
