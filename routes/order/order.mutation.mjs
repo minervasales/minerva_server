@@ -91,8 +91,6 @@ router.post(
          
              </html>`
          );
-
-         res.json(order);
       }
 
       const order = await prisma.orders.create({
