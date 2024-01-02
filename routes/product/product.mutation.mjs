@@ -122,7 +122,7 @@ router.put(
       });
       const products = await prisma.product.update({
          data: {
-            newQuantity: prodId.oldQuantity + quantity,
+            newQuantity: prodId.newQuantity + quantity,
             oldQuantity: prodId.oldQuantity,
          },
          where: {
