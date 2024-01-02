@@ -33,7 +33,7 @@ router.get(
    tryCatch(async (req, res) => {
       const schedule = await prisma.schedule.findMany({
          where: {
-            scheduleID: {
+            id: {
                contains: req.query.search,
                mode: "insensitive",
             },
