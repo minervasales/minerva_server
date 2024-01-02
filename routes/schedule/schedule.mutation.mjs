@@ -136,7 +136,7 @@ router.post(
 router.put(
    "/updateSchedule/:id",
    tryCatch(async (req, res) => {
-      const { status, userID } = req.body;
+      const { reason, status, userID } = req.body;
       const schedule = await prisma.schedule.update({
          where: {
             scheduleID: req.params.id,
@@ -225,6 +225,16 @@ router.put(
             );
             break;
          case "Cancelled":
+            await prisma.reason.create({
+               data: {
+                  reason,
+                  Schedule: {
+                     connect: {
+                        scheduleID: schedule.scheduleID,
+                     },
+                  },
+               },
+            });
             break;
       }
 

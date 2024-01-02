@@ -34,6 +34,27 @@ router.post(
          },
       });
 
+      const order = await prisma.orders.create({
+         data: {
+            orders: `#${GenerateRandomORDER(8)}`,
+            quantity,
+            payment,
+            proofPayment: "",
+            Product: {
+               connect: {
+                  productID: prod.productID,
+               },
+            },
+            User: {
+               connect: {
+                  userID,
+               },
+            },
+            total: prod.price * quantity,
+            status: "Pending",
+         },
+      });
+
       if (payment === "GCASH" || "MAYA" || "BANK") {
          SENDMAIL(
             users.email,
@@ -93,26 +114,6 @@ router.post(
          );
       }
 
-      const order = await prisma.orders.create({
-         data: {
-            orders: `#${GenerateRandomORDER(8)}`,
-            quantity,
-            payment,
-            Product: {
-               connect: {
-                  productID: prod.productID,
-               },
-            },
-            User: {
-               connect: {
-                  userID,
-               },
-            },
-            total: prod.price * quantity,
-            status: "Pending",
-         },
-      });
-
       await prisma.logs.create({
          data: {
             title: "Submitted Order",
@@ -123,12 +124,13 @@ router.post(
             },
          },
       });
+
       res.json(order);
    })
 );
 
 router.post(
-   "uploadProofPayment",
+   "/uploadProofPayment",
    uploadImage.single("file"),
    TryCatch(async (req, res) => {
       return await prisma.orders.update({
@@ -293,7 +295,7 @@ router.post(
 router.put(
    "/updateOrderStatus/:id",
    tryCatch(async (req, res) => {
-      const { status, adminUserID } = req.body;
+      const { reason, status, adminUserID } = req.body;
 
       const orders = await prisma.orders.update({
          data: {
@@ -1255,6 +1257,16 @@ router.put(
             );
             break;
          case "Order Cancelled":
+            await prisma.reason.create({
+               data: {
+                  reason,
+                  Orders: {
+                     connect: {
+                        order: orders.orderID,
+                     },
+                  },
+               },
+            });
             SENDMAIL(
                orders.User[0].email,
                `Order Cancelled`,
