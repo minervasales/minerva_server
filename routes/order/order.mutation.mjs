@@ -11,7 +11,6 @@ const router = express.Router();
 
 router.post(
    "/createOrders",
-   uploadImage.single("file"),
    tryCatch(async (req, res) => {
       const { productID, quantity, payment, userID } = req.body;
 
@@ -147,6 +146,21 @@ router.post(
          },
       });
       res.json(order);
+   })
+);
+
+router.post(
+   "uploadProofPayment",
+   uploadImage.single("file"),
+   TryCatch(async (req, res) => {
+      return await prisma.orders.update({
+         where: {
+            proofPayment: req.file.location,
+         },
+         data: {
+            orderID: req.params.id,
+         },
+      });
    })
 );
 
