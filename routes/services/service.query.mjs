@@ -11,7 +11,7 @@ router.get(
          take: 3,
          skip: req.query.skip * 3,
          orderBy: {
-            createdAt: req.query.orderby,
+            updatedAt: req.query.orderby,
          },
       });
 
@@ -20,7 +20,7 @@ router.get(
 );
 
 router.get(
-   "getSearchServices",
+   "/getSearchServices",
    TryCatch(async (req, res) => {
       const services = await prisma.services.findMany({
          where: {
