@@ -26,7 +26,7 @@ router.get(
          take: 6,
          skip: req.query.skip * 6,
          orderBy: {
-            updatedAt: "asc",
+            updatedAt: "desc",
          },
       });
 

@@ -86,6 +86,9 @@ router.get(
             },
             Reason: true,
          },
+         orderBy: {
+            createdAt: req.query.orderby,
+         },
       });
       res.json(orders);
    })
