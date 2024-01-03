@@ -130,7 +130,7 @@ router.post(
 );
 
 router.post(
-   "/uploadProofPayment",
+   "/uploadProofPayment/:id",
    uploadImage.single("file"),
    TryCatch(async (req, res) => {
       return await prisma.orders.update({
