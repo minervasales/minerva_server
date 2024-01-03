@@ -1215,7 +1215,7 @@ router.put(
             <body style="box-sizing:  border-box; margin: 0; padding: 0;">
                 <table style="width: 500px; height: auto; ">
                     <tr style="height: 60px;">
-                        <td style="font-family: Poppins;">Hello ${users[0].profile.firstname} ${users[0].profile.lastname}</h2>
+                        <td style="font-family: Poppins;">Hello ${orders.User[0].profile.firstname} ${orders.User[0].profile.firstname}</h2>
                         </td>
                     </tr>
                     <tr style=" height: 60px;">
@@ -1262,7 +1262,7 @@ router.put(
                   reason,
                   Orders: {
                      connect: {
-                        order: orders.orderID,
+                        orderID: orders.orderID,
                      },
                   },
                },
