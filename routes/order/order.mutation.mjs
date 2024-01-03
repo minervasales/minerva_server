@@ -129,7 +129,7 @@ router.post(
    })
 );
 
-router.post(
+router.put(
    "/uploadProofPayment/:id",
    uploadImage.single("file"),
    TryCatch(async (req, res) => {
