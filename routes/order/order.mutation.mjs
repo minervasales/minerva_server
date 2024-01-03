@@ -133,14 +133,16 @@ router.put(
    "/uploadProofPayment/:id",
    uploadImage.single("file"),
    TryCatch(async (req, res) => {
-      return await prisma.orders.update({
-         where: {
+      const orders = await prisma.orders.update({
+         data: {
             proofPayment: req.file.location,
          },
-         data: {
+         where: {
             orderID: req.params.id,
          },
       });
+
+      res.json(orders);
    })
 );
 
