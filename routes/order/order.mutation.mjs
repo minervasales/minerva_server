@@ -1292,6 +1292,13 @@ router.put(
                   </td>
               </tr>
               <tr style=" height: 60px;">
+                  <td style="font-family: Poppins;">Reason for Cancellation
+              </td>
+              <tr style=" height: 60px;">
+                  <td style="font-family: Poppins;">${reason}
+           </td>
+          </tr>
+              <tr style=" height: 60px;">
                   <td style="font-family: Poppins;">
                       For any inquires, log in to your Minerva Sales Corp. account and inquire via chatbox or message our
                       Facebook page. Thank you.
