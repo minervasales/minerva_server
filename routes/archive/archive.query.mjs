@@ -6,7 +6,7 @@ const router = express();
 router.get(
    "/getAllArchive",
    tryCatch(async (req, res) => {
-      const { filter, skip, orderby } = req.query;
+      const { filter, skip } = req.query;
       switch (filter) {
          case "Daily":
             const Dailyarchvive = await prisma.$queryRawUnsafe(`
@@ -16,7 +16,6 @@ router.get(
             JOIN "Profile" ON "Profile"."userID" = "User"."userID"
             LIMIT 6
             OFFSET 6*${skip}
-            ORDER "createdAt" by ${orderby}
 			`);
 
             res.json(Dailyarchvive);
@@ -30,7 +29,6 @@ router.get(
             WHERE EXTRACT(WEEK FROM "Archive"."createdAt") = EXTRACT(WEEK FROM NOW())
             LIMIT 6
             OFFSET 6*${skip}
-            ORDER "createdAt" by ${orderby}
             `);
 
             res.json(WeeklyArchvive);
@@ -44,7 +42,6 @@ router.get(
             WHERE EXTRACT(MONTH FROM "Archive"."createdAt") = EXTRACT(MONTH FROM NOW())
             LIMIT 6
             OFFSET 6*${skip}
-            ORDER "createdAt" by ${orderby}
             `);
 
             res.json(MonthlyArchvive);
